@@ -12,11 +12,15 @@ import {
   AlertTriangle,
   Trash2,
   ChevronDown,
-  Search,
   Plus
 } from 'lucide-react';
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  currentView: string;
+  onNavigate: (view: any) => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate }) => {
   return (
     <aside className="w-64 flex flex-col h-full bg-white border-r border-gray-200 shrink-0">
       {/* Top Section - Brand/Title */}
@@ -37,12 +41,42 @@ const Sidebar: React.FC = () => {
         
         {/* Main Nav */}
         <nav className="space-y-1">
-          <NavItem icon={<TicketIcon size={18} />} label="Tickets" active />
-          <NavItem icon={<LayoutDashboard size={18} />} label="Dashboard" />
-          <NavItem icon={<BarChart3 size={18} />} label="Analytics" />
-          <NavItem icon={<Zap size={18} />} label="Automations" />
-          <NavItem icon={<Clock size={18} />} label="SLA Monitor" />
-          <NavItem icon={<Settings size={18} />} label="Settings" />
+          <NavItem 
+            icon={<LayoutDashboard size={18} />} 
+            label="Dashboard" 
+            active={currentView === 'dashboard'} 
+            onClick={() => onNavigate('dashboard')} 
+          />
+          <NavItem 
+            icon={<TicketIcon size={18} />} 
+            label="Tickets" 
+            active={currentView === 'tickets'} 
+            onClick={() => onNavigate('tickets')} 
+          />
+          <NavItem 
+            icon={<BarChart3 size={18} />} 
+            label="Analytics" 
+            active={currentView === 'analytics'} 
+            onClick={() => onNavigate('analytics')}
+          />
+          <NavItem 
+            icon={<Zap size={18} />} 
+            label="Automations" 
+            active={currentView === 'automations'} 
+            onClick={() => onNavigate('automations')}
+          />
+          <NavItem 
+            icon={<Clock size={18} />} 
+            label="SLA Monitor" 
+            active={currentView === 'sla'} 
+            onClick={() => onNavigate('sla')}
+          />
+          <NavItem 
+            icon={<Settings size={18} />} 
+            label="Settings" 
+            active={currentView === 'settings'} 
+            onClick={() => onNavigate('settings')}
+          />
         </nav>
 
         {/* Views Section */}
@@ -52,7 +86,7 @@ const Sidebar: React.FC = () => {
             <button className="text-blue-500 text-[11px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Manage</button>
           </div>
           <div className="space-y-0.5">
-            <ViewItem label="All recent tickets" active />
+            <ViewItem label="All recent tickets" active={currentView === 'tickets'} />
             <ViewItem label="Tickets to handle" count={4} />
             <ViewItem label="My open tickets" count={0} />
             <ViewItem label="My tickets (7 days)" count={0} />
@@ -100,11 +134,14 @@ const Sidebar: React.FC = () => {
   );
 };
 
-const NavItem: React.FC<{ icon: React.ReactNode, label: string, active?: boolean, slim?: boolean }> = ({ icon, label, active, slim }) => (
-  <a href="#" className={`flex items-center space-x-3 px-3 ${slim ? 'py-1.5' : 'py-2'} rounded-lg text-sm font-medium transition-colors ${active ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}>
+const NavItem: React.FC<{ icon: React.ReactNode, label: string, active?: boolean, slim?: boolean, onClick?: () => void }> = ({ icon, label, active, slim, onClick }) => (
+  <button 
+    onClick={onClick}
+    className={`w-full flex items-center space-x-3 px-3 ${slim ? 'py-1.5' : 'py-2'} rounded-lg text-sm font-medium transition-colors ${active ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+  >
     <span className={active ? 'text-blue-600' : 'text-gray-400'}>{icon}</span>
     <span>{label}</span>
-  </a>
+  </button>
 );
 
 const ViewItem: React.FC<{ label: string, active?: boolean, count?: number, dotColor?: string }> = ({ label, active, count, dotColor }) => (

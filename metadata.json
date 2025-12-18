@@ -1,0 +1,8 @@
+{
+  "name": "SmartHelp AI IT Helpdesk",
+  "description": "An enterprise-grade AI-powered IT helpdesk dashboard featuring automated ticket classification, priority assignment, and SLA monitoring with a sleek, modern UI inspired by top-tier CRM tools.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
